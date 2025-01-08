@@ -61,8 +61,11 @@ def nodemcu_builder(temp_ino):
     print("진입")
     inoproject, ino = os.path.split(temp_ino)
     fqbn = "esp8266:esp8266:nodemcuv2"
-    res = arduino.compile(fqbn=fqbn, sketch=temp_ino, export_binaries=True, build_path=os.path.join(inoproject, "build"))
-
+    try:
+        res = arduino.compile(fqbn=fqbn, sketch=temp_ino, export_binaries=True, build_path=os.path.join(inoproject, "build"))
+    except:
+        return "compile failed"
+    
     build_res = res['result']['builder_result']['build_path']
 
     bin_path = os.path.join(build_res,"esp8266.esp8266.nodemcuv2" , ino+".bin")

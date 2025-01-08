@@ -26,9 +26,9 @@ class BuildAPI(MethodView):
         # print(data)
         a = create_temp_project(data['message'])
 
-        if data['board_type'] == "uno":
+        if data['config']['fqbn'] == "arduino:avr:uno":
             b = ino_builder(a)
-        elif str(data['board_type']) == "nodemcu":
+        elif data['config']['fqbn'] == "esp8266:esp8266:esp8266":
             b = nodemcu_builder(a)
 
         # try:
@@ -40,6 +40,9 @@ class BuildAPI(MethodView):
         #     b = ino_builder(a)
         #     print(e)
         # print(b)
+        if b == "compile failed":
+            return jsonify(ResponseParam("success", "TestPOST", b).get_response()), 200
+        
         return jsonify(ResponseParam("success", "TestPOST", str(b)).get_response()), 200
 
 
